@@ -408,7 +408,3 @@ DELETE /api/payment-methods/:id - Delete payment method (Admin)
 | Frontend | 3000 | http://localhost:3000 |
 | Backend API | 5000 | http://localhost:5000 |
 | MongoDB | 27017 | mongodb://localhost:27017 |
-
----
-
-**Built with ❤️ using MERN Stack**
