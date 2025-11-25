@@ -1,0 +1,16 @@
+{
+  "name": "slooze-food-delivery",
+  "version": "1.0.0",
+  "description": "Full-stack food delivery application with RBAC",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "seed": "cd backend && npm run seed",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "./start.sh"
+  },
+  "keywords": ["food-delivery", "mern", "rbac"],
+  "author": "Slooze",
+  "license": "ISC"
+}
