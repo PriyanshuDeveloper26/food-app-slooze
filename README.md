@@ -349,39 +349,6 @@ food_delivery/
 - Toast notifications
 - Loading states
 
----
-
-## 🎬 Demo Video Script
-
-1. **Admin Demo** - Show global access, payment management
-2. **Manager Demo** - Show country restriction, checkout capability
-3. **Member Demo** - Show limited access, cannot checkout
-4. **Feature Highlights** - RBAC, country filtering, order flow
-
----
-
-## 📧 Submission
-
-This project includes:
-- ✅ Complete source code (backend + frontend)
-- ✅ Comprehensive documentation
-- ✅ Setup instructions
-- ✅ API collection
-- ✅ Database seeding scripts
-- ✅ Demo guide
-- ✅ Architecture documentation
-
-**Contact:** careers@slooze.xyz
-
----
-
-## © Copyright Notice
-
-**© Slooze. All Rights Reserved.**
-
-Please do not share or distribute this material outside the intended evaluation process.
-
----
 
 ## 📋 Quick Reference
 
