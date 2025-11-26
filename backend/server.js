@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from './config/database.js';
 import errorHandler from './middleware/errorHandler.js';
+import initializeUsers from './utils/initializeUsers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,8 +20,10 @@ import paymentRoutes from './routes/paymentRoutes.js';
 // Load env vars
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database and initialize default users
+connectDB().then(() => {
+  initializeUsers();
+});
 
 const app = express();
 

@@ -12,6 +12,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [loading, setLoading] = useState(false);
+  const [paymentRequested, setPaymentRequested] = useState(false);
 
   const canCheckout = user.role === 'admin' || user.role === 'manager';
 
@@ -49,6 +50,73 @@ const Cart = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRequestPayment = () => {
+    if (!deliveryAddress.trim()) {
+      toast.error('Please enter delivery address');
+      return;
+    }
+
+    const totalAmount = (getTotal() * 1.05).toFixed(2);
+    const currency = restaurant?.country === 'India' ? '₹' : '$';
+    
+    toast(
+      (t) => (
+        <div className="flex flex-col space-y-3">
+          <div>
+            <p className="font-semibold text-gray-900">Request Payment Approval?</p>
+            <p className="text-sm text-gray-600 mt-1">
+              Total: {currency}{totalAmount}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Your request will be sent to an Admin or Manager for approval.
+            </p>
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                confirmPaymentRequest();
+              }}
+              className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: 10000,
+        position: 'top-center',
+      }
+    );
+  };
+
+  const confirmPaymentRequest = () => {
+    const orderDetails = {
+      restaurant: restaurant.name,
+      items: items.map(item => `${item.name} x${item.quantity}`).join(', '),
+      total: `${restaurant?.country === 'India' ? '₹' : '$'}${(getTotal() * 1.05).toFixed(2)}`,
+      address: deliveryAddress,
+      user: user.name
+    };
+
+    setPaymentRequested(true);
+    
+    toast.success(
+      `Payment request submitted! An Admin/Manager will review your order for ${orderDetails.total}`,
+      { duration: 5000 }
+    );
+    
+    // In a real app, this would send a notification to admins/managers
+    console.log('Payment Request:', orderDetails);
   };
 
   if (items.length === 0) {
@@ -220,14 +288,45 @@ const Cart = () => {
                   )}
                 </button>
               ) : (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-sm text-yellow-800 mb-2">
-                    <strong>Note:</strong> Members cannot checkout orders.
-                  </p>
-                  <p className="text-xs text-yellow-700">
-                    Only Admin and Manager roles can proceed to checkout and payment.
-                  </p>
-                </div>
+                <>
+                  {!paymentRequested ? (
+                    <>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
+                        <p className="text-sm text-yellow-800 mb-2">
+                          <strong>Note:</strong> Members cannot checkout orders.
+                        </p>
+                        <p className="text-xs text-yellow-700">
+                          Only Admin and Manager roles can proceed to checkout and payment.
+                        </p>
+                      </div>
+                      <button
+                        onClick={handleRequestPayment}
+                        disabled={!deliveryAddress.trim()}
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Request Payment Approval
+                      </button>
+                    </>
+                  ) : (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-green-800 mb-1">
+                            Payment Request Submitted
+                          </p>
+                          <p className="text-xs text-green-700">
+                            An Admin or Manager will review and approve your order shortly.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
 
               <button
