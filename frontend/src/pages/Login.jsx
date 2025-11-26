@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Loader2 } from 'lucide-react';
+import { LogIn, Loader2, Mail, Lock, ChefHat, Sparkles, Shield, Globe, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
 import { useAuthStore } from '../store/authStore';
@@ -45,56 +45,68 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50 flex items-center justify-center p-4">
-      <div className="max-w-6xl w-full grid md:grid-cols-2 gap-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-red-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="max-w-6xl w-full grid md:grid-cols-2 gap-8 relative z-10">
         {/* Left Side - Branding */}
-        <div className="hidden md:flex flex-col justify-center space-y-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-3xl">S</span>
+        <div className="hidden md:flex flex-col justify-center space-y-8 animate-fade-in">
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <div className="w-20 h-20 bg-gradient-to-br from-red-500 via-pink-500 to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                <ChefHat className="w-10 h-10 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">Slooze</h1>
-              <p className="text-gray-600">Food Delivery</p>
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">Slooze</h1>
+              <p className="text-gray-600 text-lg font-medium">Delicious Food, Fast Delivery</p>
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-4 bg-white/40 backdrop-blur-sm rounded-2xl p-6 border border-white/60">
             <h2 className="text-3xl font-bold text-gray-900">
-              Order your favorite food
+              🍕 Order your favorite food
             </h2>
-            <p className="text-gray-600 text-lg">
-              Access restaurants and place orders based on your role and location.
+            <p className="text-gray-700 text-lg leading-relaxed">
+              Access restaurants and place orders based on your role and location. Experience seamless food delivery at your fingertips.
             </p>
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-red-600 font-semibold">1</span>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-4 bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/60 hover:bg-white/70 transition-all duration-300 transform hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <span className="text-white font-bold text-xl">1</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Browse Restaurants</h3>
-                <p className="text-sm text-gray-600">Discover restaurants in your region</p>
+                <h3 className="font-bold text-gray-900 text-lg">Browse Restaurants</h3>
+                <p className="text-sm text-gray-600">Discover amazing restaurants in your region</p>
               </div>
             </div>
 
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-red-600 font-semibold">2</span>
+            <div className="flex items-start space-x-4 bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/60 hover:bg-white/70 transition-all duration-300 transform hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <span className="text-white font-bold text-xl">2</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Create Order</h3>
-                <p className="text-sm text-gray-600">Add your favorite items to cart</p>
+                <h3 className="font-bold text-gray-900 text-lg">Create Order</h3>
+                <p className="text-sm text-gray-600">Add your favorite items to cart easily</p>
               </div>
             </div>
 
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-red-600 font-semibold">3</span>
+            <div className="flex items-start space-x-4 bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/60 hover:bg-white/70 transition-all duration-300 transform hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <span className="text-white font-bold text-xl">3</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Checkout & Enjoy</h3>
+                <h3 className="font-bold text-gray-900 text-lg">Checkout & Enjoy</h3>
                 <p className="text-sm text-gray-600">Complete payment and track your order</p>
               </div>
             </div>

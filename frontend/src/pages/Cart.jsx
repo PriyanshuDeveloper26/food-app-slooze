@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag, Loader2 } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
@@ -7,13 +7,18 @@ import api from '../utils/api';
 import toast from 'react-hot-toast';
 
 const Cart = () => {
-  const { items, restaurant, updateQuantity, removeItem, clearCart, getTotal } = useCartStore();
+  const { items, restaurant, updateQuantity, removeItem, clearCart, getTotal, validateCart } = useCartStore();
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [loading, setLoading] = useState(false);
 
   const canCheckout = user.role === 'admin' || user.role === 'manager';
+
+  // Validate cart on mount to clean up any corrupted data
+  useEffect(() => {
+    validateCart();
+  }, [validateCart]);
 
   const handleCreateOrder = async () => {
     if (!deliveryAddress.trim()) {
@@ -48,7 +53,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 flex items-center justify-center">
         <div className="text-center">
           <ShoppingBag className="w-24 h-24 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
@@ -65,7 +70,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Your Cart</h1>
 
@@ -74,16 +79,29 @@ const Cart = () => {
           <div className="lg:col-span-2 space-y-4">
             {/* Restaurant Info */}
             <div className="bg-white rounded-xl shadow-md p-6">
-              <div className="flex items-center space-x-4">
-                <img
-                  src={restaurant?.image}
-                  alt={restaurant?.name}
-                  className="w-16 h-16 rounded-lg object-cover"
-                />
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">{restaurant?.name}</h2>
-                  <p className="text-sm text-gray-600">{restaurant?.cuisine}</p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={restaurant?.image}
+                    alt={restaurant?.name}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">{restaurant?.name}</h2>
+                    <p className="text-sm text-gray-600">{restaurant?.cuisine}</p>
+                  </div>
                 </div>
+                <button
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to clear your cart?')) {
+                      clearCart();
+                      toast.success('Cart cleared successfully!');
+                    }
+                  }}
+                  className="text-red-600 hover:text-red-700 text-sm font-medium"
+                >
+                  Clear Cart
+                </button>
               </div>
             </div>
 
@@ -94,9 +112,13 @@ const Cart = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-4 flex-1">
                       <img
-                        src={item.image}
+                        src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
                         alt={item.name}
                         className="w-20 h-20 rounded-lg object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80';
+                        }}
                       />
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>

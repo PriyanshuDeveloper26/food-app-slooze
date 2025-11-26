@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Clock, MapPin, ArrowLeft, Plus, Check, Leaf } from 'lucide-react';
+import { Star, Clock, MapPin, ArrowLeft, Plus, Minus, Check, Leaf } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -13,7 +13,7 @@ const RestaurantDetails = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const { addItem, items: cartItems } = useCartStore();
+  const { addItem, updateQuantity, clearCart, items: cartItems, restaurant: cartRestaurant } = useCartStore();
 
   useEffect(() => {
     fetchRestaurantDetails();
@@ -37,12 +37,42 @@ const RestaurantDetails = () => {
   };
 
   const handleAddToCart = (item) => {
-    addItem(item, restaurant);
-    toast.success(`${item.name} added to cart!`);
+    const added = addItem(item, restaurant);
+    if (!added) {
+      // Item from different restaurant
+      toast.error(
+        `Your cart has items from ${cartRestaurant?.name}. Clear cart to add items from ${restaurant.name}`,
+        { duration: 4000 }
+      );
+    } else {
+      toast.success(`${item.name} added to cart!`);
+    }
   };
 
   const isInCart = (itemId) => {
     return cartItems.some(item => item._id === itemId);
+  };
+
+  const getCartItemQuantity = (itemId) => {
+    const cartItem = cartItems.find(item => item._id === itemId);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
+  const handleIncreaseQuantity = (item) => {
+    const quantity = getCartItemQuantity(item._id);
+    updateQuantity(item._id, quantity + 1);
+    toast.success(`${item.name} quantity increased!`);
+  };
+
+  const handleDecreaseQuantity = (item) => {
+    const quantity = getCartItemQuantity(item._id);
+    if (quantity > 1) {
+      updateQuantity(item._id, quantity - 1);
+      toast.success(`${item.name} quantity decreased!`);
+    } else {
+      updateQuantity(item._id, 0);
+      toast.success(`${item.name} removed from cart!`);
+    }
   };
 
   const categories = ['all', ...new Set(menuItems.map(item => item.category))];
@@ -52,7 +82,7 @@ const RestaurantDetails = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
         <LoadingSpinner size="xl" />
       </div>
     );
@@ -63,7 +93,7 @@ const RestaurantDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
       {/* Header Image */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <img
@@ -145,12 +175,16 @@ const RestaurantDetails = () => {
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
-                            {item.isVeg && (
-                              <div className="flex items-center space-x-1 text-green-600">
-                                <Leaf className="w-4 h-4 fill-current" />
+                            {item.isVeg ? (
+                              <div className="flex-shrink-0 w-5 h-5 border-2 border-green-600 rounded flex items-center justify-center">
+                                <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                              </div>
+                            ) : (
+                              <div className="flex-shrink-0 w-5 h-5 border-2 border-red-600 rounded flex items-center justify-center">
+                                <div className="w-2 h-2 bg-red-600 rounded-full"></div>
                               </div>
                             )}
+                            <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
                           </div>
                           <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
                         </div>
@@ -164,34 +198,46 @@ const RestaurantDetails = () => {
                           <span className="text-xs text-gray-500 capitalize">{item.category}</span>
                         </div>
 
-                        <button
-                          onClick={() => handleAddToCart(item)}
-                          className={`flex items-center space-x-1 px-4 py-2 rounded-lg font-medium transition ${
-                            isInCart(item._id)
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-red-600 text-white hover:bg-red-700'
-                          }`}
-                        >
-                          {isInCart(item._id) ? (
-                            <>
-                              <Check className="w-4 h-4" />
-                              <span className="text-sm">Added</span>
-                            </>
-                          ) : (
-                            <>
+                        {isInCart(item._id) ? (
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => handleDecreaseQuantity(item)}
+                              className="w-8 h-8 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </button>
+                            <span className="text-lg font-bold text-gray-900 min-w-[2rem] text-center">
+                              {getCartItemQuantity(item._id)}
+                            </span>
+                            <button
+                              onClick={() => handleIncreaseQuantity(item)}
+                              className="w-8 h-8 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                            >
                               <Plus className="w-4 h-4" />
-                              <span className="text-sm">Add</span>
-                            </>
-                          )}
-                        </button>
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => handleAddToCart(item)}
+                            className="flex items-center space-x-1 px-4 py-2 rounded-lg font-medium transition bg-red-600 text-white hover:bg-red-700"
+                          >
+                            <Plus className="w-4 h-4" />
+                            <span className="text-sm">Add</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
-                    <div className="w-32 h-full flex-shrink-0">
+                    <div className="w-32 h-32 flex-shrink-0 relative overflow-hidden">
                       <img
-                        src={item.image}
+                        src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-lg"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80';
+                        }}
                       />
                     </div>
                   </div>

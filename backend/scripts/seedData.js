@@ -150,7 +150,7 @@ const seedData = async () => {
         description: 'Creamy tomato-based curry with tender chicken',
         price: 350,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=800',
+        image: '/assets/butter-chicken.jpg',
         isVeg: false,
         country: 'India'
       },
@@ -160,7 +160,7 @@ const seedData = async () => {
         description: 'Cottage cheese in rich spicy gravy',
         price: 300,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800',
+        image: '/assets/paneer-tikka-masala.jpg',
         isVeg: true,
         country: 'India'
       },
@@ -170,7 +170,7 @@ const seedData = async () => {
         description: 'Soft flatbread topped with garlic and butter',
         price: 60,
         category: 'Sides',
-        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800',
+        image: '/assets/garlic-naan.jpg',
         isVeg: true,
         country: 'India'
       },
@@ -180,7 +180,7 @@ const seedData = async () => {
         description: 'Sweet yogurt drink with mango',
         price: 80,
         category: 'Beverage',
-        image: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=800',
+        image: '/assets/mango-lassi.jpg',
         isVeg: true,
         country: 'India'
       }
@@ -194,7 +194,7 @@ const seedData = async () => {
         description: 'Mumbai\'s famous street food burger',
         price: 40,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800',
+        image: '/assets/vada-pau.jpg',
         isVeg: true,
         country: 'India'
       },
@@ -204,7 +204,7 @@ const seedData = async () => {
         description: 'Mixed vegetables curry with buttered bread',
         price: 120,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1626704609448-676bb87cb4b5?w=800',
+        image: '/assets/pau-bhaji.jpg',
         isVeg: true,
         country: 'India'
       },
@@ -214,7 +214,7 @@ const seedData = async () => {
         description: 'Crispy shells filled with spicy water',
         price: 50,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=800',
+        image: '/assets/pani-puri.jpg',
         isVeg: true,
         country: 'India'
       }
@@ -228,7 +228,7 @@ const seedData = async () => {
         description: 'Grilled chicken marinated in yogurt and spices',
         price: 280,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800',
+        image: '/assets/chicken-tikka.jpg',
         isVeg: false,
         country: 'India'
       },
@@ -238,7 +238,7 @@ const seedData = async () => {
         description: 'Black lentils cooked in butter and cream',
         price: 250,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800',
+        image: '/assets/dal-makhni.jpg',
         isVeg: true,
         country: 'India'
       },
@@ -248,7 +248,7 @@ const seedData = async () => {
         description: 'Aromatic rice dish with spices and meat',
         price: 320,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800',
+        image: '/assets/biryani.jpg',
         isVeg: false,
         country: 'India'
       }
@@ -262,11 +262,11 @@ const seedData = async () => {
       {
         restaurant: americaRestaurants[0]._id,
         name: 'Classic Cheeseburger',
-        description: 'Beef patty with cheese, lettuce, and tomato',
+        description: 'Cheese patty with lettuce, and tomato',
         price: 12.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
-        isVeg: false,
+        image: '/assets/Classic-Cheeseburger.jpg',
+        isVeg: true,
         country: 'America'
       },
       {
@@ -275,7 +275,7 @@ const seedData = async () => {
         description: 'Plant-based patty with fresh vegetables',
         price: 11.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1520072959219-c595dc870360?w=800',
+        image: '/assets/Veggie-Burger.jpg',
         isVeg: true,
         country: 'America'
       },
@@ -285,7 +285,7 @@ const seedData = async () => {
         description: 'Crispy golden fries',
         price: 4.99,
         category: 'Sides',
-        image: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?w=800',
+        image: '/assets/French-Fries.jpg',
         isVeg: true,
         country: 'America'
       },
@@ -295,7 +295,7 @@ const seedData = async () => {
         description: 'Thick and creamy chocolate milkshake',
         price: 5.99,
         category: 'Beverage',
-        image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800',
+        image: '/assets/Chocolate-Shake.jpg',
         isVeg: true,
         country: 'America'
       }
@@ -309,7 +309,7 @@ const seedData = async () => {
         description: 'Classic pizza with tomato, mozzarella, and basil',
         price: 14.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800',
+        image: '/assets/Margherita-Pizza.jpg',
         isVeg: true,
         country: 'America'
       },
@@ -319,7 +319,7 @@ const seedData = async () => {
         description: 'Classic pizza with pepperoni slices',
         price: 16.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800',
+        image: '/assets/Pepperoni-Pizza.jpg',
         isVeg: false,
         country: 'America'
       },
@@ -329,7 +329,7 @@ const seedData = async () => {
         description: 'Fresh romaine lettuce with caesar dressing',
         price: 8.99,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=800',
+        image: '/assets/Caesar-Salad.jpg',
         isVeg: true,
         country: 'America'
       }
@@ -343,7 +343,7 @@ const seedData = async () => {
         description: 'Three tacos with seasoned beef and toppings',
         price: 10.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800',
+        image: '/assets/beef-tacos.jpg',
         isVeg: false,
         country: 'America'
       },
@@ -353,7 +353,7 @@ const seedData = async () => {
         description: 'Large burrito filled with beans, rice, and veggies',
         price: 9.99,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800',
+        image: '/assets/veggie-burrito.jpg',
         isVeg: true,
         country: 'America'
       },
@@ -363,7 +363,7 @@ const seedData = async () => {
         description: 'Fresh guacamole with tortilla chips',
         price: 6.99,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=800',
+        image: '/assets/guacamole-&-chips.jpg',
         isVeg: true,
         country: 'America'
       },
@@ -373,7 +373,7 @@ const seedData = async () => {
         description: 'Sweet fried dough with cinnamon sugar',
         price: 5.99,
         category: 'Dessert',
-        image: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800',
+        image: '/assets/Churros.jpg',
         isVeg: true,
         country: 'America'
       }

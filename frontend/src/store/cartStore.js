@@ -10,9 +10,9 @@ export const useCartStore = create(
       addItem: (item, restaurant) => {
         const state = get();
         
-        // If cart has items from different restaurant, clear cart
+        // If cart has items from different restaurant, return false to indicate rejection
         if (state.restaurant && state.restaurant._id !== restaurant._id) {
-          set({ items: [], restaurant: null });
+          return false;
         }
         
         const existingItem = state.items.find(i => i._id === item._id);
@@ -28,10 +28,11 @@ export const useCartStore = create(
           });
         } else {
           set({
-            items: [...state.items, { ...item, quantity: 1 }],
+            items: [...state.items, { ...item, quantity: 1, restaurantId: restaurant._id }],
             restaurant
           });
         }
+        return true;
       },
       
       removeItem: (itemId) => {
@@ -56,6 +57,20 @@ export const useCartStore = create(
       },
       
       clearCart: () => set({ items: [], restaurant: null }),
+      
+      // Validate cart integrity - remove items from different restaurants
+      validateCart: () => {
+        const state = get();
+        if (!state.restaurant || state.items.length === 0) return;
+        
+        const validItems = state.items.filter(item => 
+          !item.restaurantId || item.restaurantId === state.restaurant._id
+        );
+        
+        if (validItems.length !== state.items.length) {
+          set({ items: validItems });
+        }
+      },
       
       getTotal: () => {
         return get().items.reduce((total, item) => {

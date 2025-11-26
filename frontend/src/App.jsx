@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
         <Toaster position="top-right" />
         {user && <Navbar />}
         
